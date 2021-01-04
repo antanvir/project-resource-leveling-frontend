@@ -4,11 +4,11 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form';
+import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import Gantt from "../Gantt/Gantt";
-
 import { Redirect } from 'react-router-dom';
 import axios, { post } from 'axios'
 
@@ -35,6 +35,7 @@ class ChartComponent extends React.Component {
 
             selectedChart: 0,
             ganttChartData: {},
+            tableData: {r: [], rSq: []},
             selectedFile: null,
             showGanttChart: false
         }
@@ -45,6 +46,7 @@ class ChartComponent extends React.Component {
         this.processResponseData = this.processResponseData.bind(this);
         this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
 
+        this.showRValues = this.showRValues.bind(this);
         this.changeChartOption = this.changeChartOption.bind(this);
 
        }
@@ -52,35 +54,40 @@ class ChartComponent extends React.Component {
     processResponseData(data){
 
         let formattedEstimatedDataForGanttChart = {data: [], links: []};
-        
         let estimatedData = data.estimated;
+        
         let estimatedRSquare = estimatedData.R2_by_time;
+        estimatedRSquare.shift();
+
         let estimatedR = estimatedData.R_by_time;
+        estimatedR.shift();
 
         estimatedData.node_matrix.map((data, index) => {
 
             let node = {};
             node['id'] = data.id;
             node['text'] = data.name;
-            node['start_date'] = String(data.OS);
+            node['start_date'] = data.OS > 0? String(data.OS)+'-5-1990': String(1)+'-5-1990';
             node['duration'] = parseInt(data.duration);
-            node['progress'] = 1.00;
+            node['resource'] = data.resource;
+            node['descendants'] = data.descendant;
+            
             formattedEstimatedDataForGanttChart.data.push(node);
         });
 
         formattedEstimatedDataForGanttChart.data.sort((a, b) => (a.id > b.id) ? 1: -1);
-        return formattedEstimatedDataForGanttChart;
+
+        this.setState({
+            showGanttChart: true,
+            tableData: {r: estimatedR, rSq: estimatedRSquare},
+            ganttChartData : formattedEstimatedDataForGanttChart
+        });
+
     }
 
     handleSuccessfulResponse(data) {
         console.log({'response': data});
-        const estimatedData = this.processResponseData(data);
-        
-        this.setState({
-            showGanttChart: true,
-            ganttChartData : estimatedData
-        });
-
+        this.processResponseData(data);
     }
 
 
@@ -121,11 +128,31 @@ class ChartComponent extends React.Component {
         });
     }
 
+    createTableDataColumn(list){
+        return list.map((data, index) => <td key={index}>{data}</td>);
+    }
 
+    showRValues(){
+        return(
+            <div>
+                <Table bordered>
+                <tbody>
+                <tr> 
+                    <td><b>R</b></td>
+                    {this.createTableDataColumn(this.state.tableData.r)}</tr>
+                <tr>
+                    <td><b>R<sup>2</sup></b></td> 
+                    {this.createTableDataColumn(this.state.tableData.rSq)}</tr>                
+                </tbody>
+                </Table>
+            </div>
+        );
+    }
 
     render() {
         return (
             <Container>
+                
                 <Row className="justify-content-center">
                     <Col>
                         <Card bg="info">
@@ -162,7 +189,9 @@ class ChartComponent extends React.Component {
                         <Button variant="danger" onClick={() => this.changeChartOption(2)}>Burgess 2</Button> 
                     </Col>
                 </Row>
+                
                 {this.state.showGanttChart && <Gantt tasks={this.state.ganttChartData} />}
+                {this.state.showGanttChart && this.showRValues()}
                 
             </Container>
         );
