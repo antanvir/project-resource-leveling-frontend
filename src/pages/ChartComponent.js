@@ -8,24 +8,11 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
+import { post } from 'axios';
 import Gantt from "../Gantt/Gantt";
-import { Redirect } from 'react-router-dom';
-import axios, { post } from 'axios'
-
-import httpService from '../services/http.service';
 
 
-const data = {
-    data: [
-        { id: 1, text: 'Task #1', start_date: '15-04-2019', duration: 3, progress: 0.6 },
-        { id: 2, text: 'Task #2', start_date: '18-04-2019', duration: 3, progress: 0.4 }
-    ],
-    links: [
-        { id: 1, source: 1, target: 2, type: '0' }
-    ]
-};
-
-
+const jsonResponse = {"estimated": {"node_matrix": [{"id": 7, "name": "G", "predecessor": ["E", "F"], "duration": "1", "resource": "6", "descendant": [], "slack": 0, "critical": true, "ES": 19, "LS": 19, "EF": 20, "LF": 20, "OS": 19, "OF": 20, "FP": true, "BP": true}, {"id": 1, "name": "A", "predecessor": ["-"], "duration": "3", "resource": "6", "descendant": ["B"], "slack": 0, "critical": true, "ES": 0, "LS": 0, "EF": 3, "LF": 3, "OS": 0, "OF": 3, "FP": true, "BP": true}, {"id": 2, "name": "B", "predecessor": ["A"], "duration": "2", "resource": "1", "descendant": ["C", "D"], "slack": 0, "critical": true, "ES": 3, "LS": 3, "EF": 5, "LF": 5, "OS": 3, "OF": 5, "FP": true, "BP": true}, {"id": 3, "name": "C", "predecessor": ["B"], "duration": "5", "resource": "5", "descendant": ["E", "F"], "slack": 0, "critical": true, "ES": 5, "LS": 5, "EF": 10, "LF": 10, "OS": 5, "OF": 10, "FP": true, "BP": true}, {"id": 4, "name": "D", "predecessor": ["B"], "duration": "4", "resource": "2", "descendant": ["F"], "slack": 8, "critical": false, "ES": 5, "LS": 13, "EF": 9, "LF": 17, "OS": 10, "OF": 14, "FP": true, "BP": true}, {"id": 5, "name": "E", "predecessor": ["C"], "duration": "9", "resource": "4", "descendant": ["G"], "slack": 0, "critical": true, "ES": 10, "LS": 10, "EF": 19, "LF": 19, "OS": 10, "OF": 19, "FP": true, "BP": true}, {"id": 6, "name": "F", "predecessor": ["C", "D"], "duration": "2", "resource": "4", "descendant": ["G"], "slack": 7, "critical": false, "ES": 10, "LS": 17, "EF": 12, "LF": 19, "OS": 14, "OF": 16, "FP": true, "BP": true}], "R_by_time": [0, 6, 6, 6, 1, 1, 5, 5, 5, 5, 5, 6, 6, 6, 6, 8, 8, 4, 4, 4, 6], "R2_by_time": [0, 36, 36, 36, 1, 1, 25, 25, 25, 25, 25, 36, 36, 36, 36, 64, 64, 16, 16, 16, 36], "optimal_total_R": 103, "optimal_total_R_square": 591}}
 
 class ChartComponent extends React.Component {
 
@@ -51,17 +38,22 @@ class ChartComponent extends React.Component {
 
        }
 
+    componentDidMount(){
+        this.handleSuccessfulResponse(jsonResponse);
+    }
+
     processResponseData(data){
 
         let formattedEstimatedDataForGanttChart = {data: [], links: []};
         let estimatedData = data.estimated;
-        
+
         let estimatedRSquare = estimatedData.R2_by_time;
         estimatedRSquare.shift();
 
         let estimatedR = estimatedData.R_by_time;
         estimatedR.shift();
 
+        // eslint-disable-next-line
         estimatedData.node_matrix.map((data, index) => {
 
             let node = {};
@@ -152,7 +144,6 @@ class ChartComponent extends React.Component {
     render() {
         return (
             <Container>
-                
                 <Row className="justify-content-center">
                     <Col>
                         <Card bg="info">
