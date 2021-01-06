@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ChartComponent from './pages/ChartComponent';
+import ChartComponent from './components/ChartComponent';
 
 const App = () => <ChartComponent />
 
