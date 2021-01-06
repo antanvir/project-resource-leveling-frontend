@@ -108,7 +108,7 @@ class ChartComponent extends React.Component {
 
     uploadSelectedFile(selectedFile) {
         const formData = new FormData();
-        const url = 'https:resource-smoothing-app.herokuapp.com/postDataset/';
+        const url = 'https://resource-smoothing-app.herokuapp.com/postDataset/';
         const config = {headers: {'content-type': 'multipart/form-data' }}
         
         formData.append('file', selectedFile);
