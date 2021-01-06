@@ -8,14 +8,23 @@ export default class OutputChart extends React.Component {
     
     this.state = {
       id : this.props.chartID,
-      chartData: this.props.chartData
+      graph_id : this.props.graph_id,
+      chartData : this.props.chartData
     }
+
+  }
+
+  componentDidMount(){
+    this.forceUpdate();
   }
   
   render() {
-    let dataES = this.state.chartData.es;
-    let dataOS = this.state.chartData.os;
-    let dataOF = this.state.chartData.of;
+    
+    console.log({'Google chart matrix': this.state.chartData[this.state.id].graph});
+
+    let dataES = this.state.chartData[this.state.id].graph.es;
+    let dataOS = this.state.chartData[this.state.id].graph.os;
+    let dataOF = this.state.chartData[this.state.id].graph.of;
     
 
     return (
