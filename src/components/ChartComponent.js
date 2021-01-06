@@ -136,10 +136,10 @@ class ChartComponent extends React.Component {
             <Table className='text-center'>
             <tbody>
             <tr> 
-                <td><b>optimal R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
+                <td><b>Optimal Total R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
             </tr>
             <tr>
-                <td><b>Optimal R<sup>2</sup> </b>: {this.state.ganttChartData[this.state.selectedChart].optimalRSq}</td>
+                <td><b>Optimal Total R<sup>2</sup> </b>: {this.state.ganttChartData[this.state.selectedChart].optimalRSq}</td>
             </tr>
             </tbody>
             </Table>
