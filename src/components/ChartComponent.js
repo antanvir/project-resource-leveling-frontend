@@ -182,7 +182,7 @@ class ChartComponent extends React.Component {
 
     render() {
         return (
-            <Container style={{marginTop: 50}}>
+            <Container style={{marginTop: 30}}>
                 <Row className="justify-content-center">
                     <Col>
                         <Card bg="info">
