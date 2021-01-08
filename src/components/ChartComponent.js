@@ -135,8 +135,21 @@ class ChartComponent extends React.Component {
             <Table className='text-center' style={{marginTop : 10}}>
             <tbody>
             <tr> 
-                <td><b>Optimal R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
-                <td><b>Optimal R<sup>2</sup> </b>: {this.state.ganttChartData[this.state.selectedChart].optimalRSq}</td>
+                <td>
+                    <Card bg="info">
+                    <Card.Header>
+                    Optimal R: <b>{this.state.ganttChartData[this.state.selectedChart].optimalR}</b>
+                    </Card.Header>
+                    </Card> 
+                </td>
+
+                <td>
+                    <Card bg="info">
+                    <Card.Header>
+                    Optimal R<sup>2</sup>: <b>{this.state.ganttChartData[this.state.selectedChart].optimalRSq}</b> 
+                    </Card.Header>
+                    </Card> 
+                </td>
             </tr>
             </tbody>
             </Table>
@@ -150,10 +163,10 @@ class ChartComponent extends React.Component {
                 <Table bordered>
                 <tbody>
                 <tr> 
-                    <td style={{width: 2}}><b>R</b></td>
+                    <td bg="info"> <b>R</b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].r)}</tr>
                 <tr>
-                    <td style={{width: 2}}><b>R<sup>2</sup></b></td>
+                    <td bg="info"><b>R<sup>2</sup></b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].rSq)}</tr>
                 </tbody>
                 </Table>
@@ -163,15 +176,15 @@ class ChartComponent extends React.Component {
 
     showChartOptions(){
         return (
-            <Row className="justify-content-center" style={{marginTop: 20, marginBottom: 20}}>
+            <Row className="justify-content-center" style={{marginTop: 15, marginBottom: 15}}>
                 <Col md="auto">
-                    <Button variant="secondary" onClick={() => this.changeChartOption(0)}>Estimated</Button>
+                    <Button variant="success" onClick={() => this.changeChartOption(0)}>Estimated</Button>
                 </Col>
                 <Col md="auto">
-                    <Button variant="warning" onClick={() => this.changeChartOption(1)}>Burgess 1</Button>                        
+                    <Button variant="secondary" onClick={() => this.changeChartOption(1)}>Burgess 1</Button>                        
                 </Col>
                 <Col md="auto">
-                    <Button variant="danger" onClick={() => this.changeChartOption(2)}>Burgess 2</Button> 
+                    <Button variant="dark" onClick={() => this.changeChartOption(2)}>Burgess 2</Button> 
                 </Col>
             </Row>    
         );
@@ -179,7 +192,7 @@ class ChartComponent extends React.Component {
 
     render() {
         return (
-            <Container style={{marginTop: 40}}>
+            <Container style={{marginTop: 30}}>
                 <Row className="justify-content-center">
                     <Col>
                         <Card bg="info">
@@ -208,7 +221,10 @@ class ChartComponent extends React.Component {
                 {this.state.showGanttChart && this.showChartOptions()}
                 {this.state.showGanttChart && <GoogleChart key = {this.state.selectedChart} chartData = {this.state.ganttChartData[this.state.selectedChart].graph} />}
                 
-                {this.state.showGanttChart && this.showOptimalRValues()}
+                <Row className="justify-content-center">
+                    {this.state.showGanttChart && this.showOptimalRValues()}
+                </Row>
+
                 {this.state.showGanttChart && this.showRValues()}
                 
             </Container>

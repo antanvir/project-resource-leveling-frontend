@@ -30,7 +30,7 @@ export default class OutputChart extends React.Component {
 
       <Chart
         key = {this.state.key}
-        height={'50vh'}
+        height={'52vh'}
         chartType="Timeline"
         loader={<div>Loading Gantt Chart</div>}
         data={[
