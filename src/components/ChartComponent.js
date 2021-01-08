@@ -49,7 +49,7 @@ class ChartComponent extends React.Component {
         let formattedEstimatedDataForGanttChart = {'es': [], 'os':[], 'of': []};
 
         // eslint-disable-next-line
-        estimatedData.node_matrix.map((data, index) => {
+        estimatedData.node_matrix.map(data => {
             let nodeES = [parseInt(data.ES), data.name, '', '#33cccc', parseInt(data.ES)*1000, parseInt(data.OS)*1000];
             let nodeOS = [parseInt(data.ES), data.name, '', '#29a3a3', parseInt(data.OS)*1000, parseInt(data.OF)*1000];
             let nodeOF = [parseInt(data.ES), data.name, '', '#33cccc', parseInt(data.OF)*1000, parseInt(data.LF)*1000];
@@ -87,7 +87,7 @@ class ChartComponent extends React.Component {
             ganttChartData : [estimated, burgess1, burgess2]
         });
     
-        console.log({'value log': this.state.ganttChartData[this.state.selectedChart] });
+        console.log({'value log': this.state.ganttChartData[this.state.selectedChart]});
     }
 
 
@@ -108,7 +108,7 @@ class ChartComponent extends React.Component {
 
     uploadSelectedFile(selectedFile) {
         const formData = new FormData();
-        const url = 'https:resource-smoothing-app.herokuapp.com/postDataset/';
+        const url = 'https://resource-smoothing-app.herokuapp.com/postDataset/';
         const config = {headers: {'content-type': 'multipart/form-data' }}
         
         formData.append('file', selectedFile);
@@ -124,7 +124,6 @@ class ChartComponent extends React.Component {
 
     changeChartOption(chartID){
         this.setState({selectedChart: chartID});
-        this.forceUpdate();
     }
 
     createTableDataColumn(list){
@@ -133,12 +132,10 @@ class ChartComponent extends React.Component {
 
     showOptimalRValues(){
         return(
-            <Table className='text-center'>
+            <Table className='text-center' style={{marginTop : 10}}>
             <tbody>
             <tr> 
-                <td><b>optimal R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
-            </tr>
-            <tr>
+                <td><b>Optimal R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
                 <td><b>Optimal R<sup>2</sup> </b>: {this.state.ganttChartData[this.state.selectedChart].optimalRSq}</td>
             </tr>
             </tbody>
@@ -153,10 +150,10 @@ class ChartComponent extends React.Component {
                 <Table bordered>
                 <tbody>
                 <tr> 
-                    <td><b>R</b></td>
+                    <td style={{width: 2}}><b>R</b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].r)}</tr>
                 <tr>
-                    <td><b>R<sup>2</sup></b></td> 
+                    <td style={{width: 2}}><b>R<sup>2</sup></b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].rSq)}</tr>
                 </tbody>
                 </Table>
@@ -182,7 +179,7 @@ class ChartComponent extends React.Component {
 
     render() {
         return (
-            <Container style={{marginTop: 50}}>
+            <Container style={{marginTop: 40}}>
                 <Row className="justify-content-center">
                     <Col>
                         <Card bg="info">
@@ -209,9 +206,7 @@ class ChartComponent extends React.Component {
                     </Col>
                 </Row>
                 {this.state.showGanttChart && this.showChartOptions()}
-                {this.state.showGanttChart && this.state.selectedChart === 0 && <GoogleChart key={0} graph_id="estimated" chartID = {0} chartData = {this.state.ganttChartData } />}
-                {this.state.showGanttChart && this.state.selectedChart === 1 && <GoogleChart key={1} graph_id="burgess 1" chartID = {1} chartData = {this.state.ganttChartData } />}
-                {this.state.showGanttChart && this.state.selectedChart === 2 && <GoogleChart key={2} graph_id="burgess 2" chartID = {2} chartData = {this.state.ganttChartData } />}
+                {this.state.showGanttChart && <GoogleChart key = {this.state.selectedChart} chartData = {this.state.ganttChartData[this.state.selectedChart].graph} />}
                 
                 {this.state.showGanttChart && this.showOptimalRValues()}
                 {this.state.showGanttChart && this.showRValues()}

@@ -7,8 +7,7 @@ export default class OutputChart extends React.Component {
     super(props);
     
     this.state = {
-      id : this.props.chartID,
-      graph_id : this.props.graph_id,
+      key : this.props.key,
       chartData : this.props.chartData
     }
 
@@ -20,20 +19,20 @@ export default class OutputChart extends React.Component {
   
   render() {
     
-    console.log({'Google chart matrix': this.state.chartData[this.state.id].graph});
+    console.log({'Google chart matrix': this.state.chartData});
 
-    let dataES = this.state.chartData[this.state.id].graph.es;
-    let dataOS = this.state.chartData[this.state.id].graph.os;
-    let dataOF = this.state.chartData[this.state.id].graph.of;
+    let dataES = this.state.chartData.es;
+    let dataOS = this.state.chartData.os;
+    let dataOF = this.state.chartData.of;
     
 
     return (
 
       <Chart
-        key = {this.state.id}
-        height={'60vh'}
+        key = {this.state.key}
+        height={'50vh'}
         chartType="Timeline"
-        loader={<div>Loading Chart</div>}
+        loader={<div>Loading Gantt Chart</div>}
         data={[
           [
             { type: 'string', id: 'Activity' },
