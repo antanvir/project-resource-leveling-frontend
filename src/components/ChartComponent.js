@@ -209,7 +209,7 @@ class ChartComponent extends React.Component {
                                 <input type="file" onChange={this.onFileChange} />
                             </Col>
                             <Col>
-                                <Button variant="primary" type="submit">Upload File</Button>
+                                <Button variant="dark" type="submit">Upload File</Button>
                             </Col>
                             </Row>
                             </Form>
