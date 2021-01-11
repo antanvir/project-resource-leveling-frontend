@@ -49,7 +49,7 @@ class ChartComponent extends React.Component {
         let formattedEstimatedDataForGanttChart = {'es': [], 'os':[], 'of': []};
 
         // eslint-disable-next-line
-        estimatedData.node_matrix.map((data, index) => {
+        estimatedData.node_matrix.map(data => {
             let nodeES = [parseInt(data.ES), data.name, '', '#33cccc', parseInt(data.ES)*1000, parseInt(data.OS)*1000];
             let nodeOS = [parseInt(data.ES), data.name, '', '#29a3a3', parseInt(data.OS)*1000, parseInt(data.OF)*1000];
             let nodeOF = [parseInt(data.ES), data.name, '', '#33cccc', parseInt(data.OF)*1000, parseInt(data.LF)*1000];
@@ -87,7 +87,7 @@ class ChartComponent extends React.Component {
             ganttChartData : [estimated, burgess1, burgess2]
         });
     
-        console.log({'value log': this.state.ganttChartData[this.state.selectedChart] });
+        console.log({'value log': this.state.ganttChartData[this.state.selectedChart]});
     }
 
 
@@ -124,7 +124,6 @@ class ChartComponent extends React.Component {
 
     changeChartOption(chartID){
         this.setState({selectedChart: chartID});
-        this.forceUpdate();
     }
 
     createTableDataColumn(list){
@@ -133,13 +132,24 @@ class ChartComponent extends React.Component {
 
     showOptimalRValues(){
         return(
-            <Table className='text-center'>
+            <Table className='text-center' style={{marginTop : 10}}>
             <tbody>
             <tr> 
-                <td><b>Optimal Total R: </b> {this.state.ganttChartData[this.state.selectedChart].optimalR}</td>
-            </tr>
-            <tr>
-                <td><b>Optimal Total R<sup>2</sup> </b>: {this.state.ganttChartData[this.state.selectedChart].optimalRSq}</td>
+                <td>
+                    <Card bg="info">
+                    <Card.Header>
+                    Optimal R: <b>{this.state.ganttChartData[this.state.selectedChart].optimalR}</b>
+                    </Card.Header>
+                    </Card> 
+                </td>
+
+                <td>
+                    <Card bg="info">
+                    <Card.Header>
+                    Optimal R<sup>2</sup>: <b>{this.state.ganttChartData[this.state.selectedChart].optimalRSq}</b> 
+                    </Card.Header>
+                    </Card> 
+                </td>
             </tr>
             </tbody>
             </Table>
@@ -153,10 +163,10 @@ class ChartComponent extends React.Component {
                 <Table bordered>
                 <tbody>
                 <tr> 
-                    <td><b>R</b></td>
+                    <td bg="info"> <b>R</b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].r)}</tr>
                 <tr>
-                    <td><b>R<sup>2</sup></b></td> 
+                    <td bg="info"><b>R<sup>2</sup></b></td>
                     {this.createTableDataColumn(this.state.ganttChartData[this.state.selectedChart].rSq)}</tr>
                 </tbody>
                 </Table>
@@ -166,15 +176,15 @@ class ChartComponent extends React.Component {
 
     showChartOptions(){
         return (
-            <Row className="justify-content-center" style={{marginTop: 20, marginBottom: 20}}>
+            <Row className="justify-content-center" style={{marginTop: 15, marginBottom: 15}}>
                 <Col md="auto">
-                    <Button variant="secondary" onClick={() => this.changeChartOption(0)}>Estimated</Button>
+                    <Button variant="success" onClick={() => this.changeChartOption(0)}>Estimated</Button>
                 </Col>
                 <Col md="auto">
-                    <Button variant="warning" onClick={() => this.changeChartOption(1)}>Burgess 1</Button>                        
+                    <Button variant="secondary" onClick={() => this.changeChartOption(1)}>Burgess 1</Button>                        
                 </Col>
                 <Col md="auto">
-                    <Button variant="danger" onClick={() => this.changeChartOption(2)}>Burgess 2</Button> 
+                    <Button variant="dark" onClick={() => this.changeChartOption(2)}>Burgess 2</Button> 
                 </Col>
             </Row>    
         );
@@ -199,7 +209,7 @@ class ChartComponent extends React.Component {
                                 <input type="file" onChange={this.onFileChange} />
                             </Col>
                             <Col>
-                                <Button variant="primary" type="submit">Upload File</Button>
+                                <Button variant="dark" type="submit">Upload File</Button>
                             </Col>
                             </Row>
                             </Form>
@@ -209,11 +219,12 @@ class ChartComponent extends React.Component {
                     </Col>
                 </Row>
                 {this.state.showGanttChart && this.showChartOptions()}
-                {this.state.showGanttChart && this.state.selectedChart === 0 && <GoogleChart key={0} graph_id="estimated" chartID = {0} chartData = {this.state.ganttChartData } />}
-                {this.state.showGanttChart && this.state.selectedChart === 1 && <GoogleChart key={1} graph_id="burgess 1" chartID = {1} chartData = {this.state.ganttChartData } />}
-                {this.state.showGanttChart && this.state.selectedChart === 2 && <GoogleChart key={2} graph_id="burgess 2" chartID = {2} chartData = {this.state.ganttChartData } />}
+                {this.state.showGanttChart && <GoogleChart key = {this.state.selectedChart} chartData = {this.state.ganttChartData[this.state.selectedChart].graph} />}
                 
-                {this.state.showGanttChart && this.showOptimalRValues()}
+                <Row className="justify-content-center">
+                    {this.state.showGanttChart && this.showOptimalRValues()}
+                </Row>
+
                 {this.state.showGanttChart && this.showRValues()}
                 
             </Container>
